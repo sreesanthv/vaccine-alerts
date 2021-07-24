@@ -3,24 +3,20 @@ package notification
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"io"
 	"log"
 	"net/http"
 	"strings"
-	"time"
 )
 
 type SlackNotifier struct {
 	webhookUrl  string
 	isHeaderSet bool
-	headers     []string
 }
 
-func NewSlackNotifier(webhookUrl string, headers []string) *SlackNotifier {
+func NewSlackNotifier(webhookUrl string) *SlackNotifier {
 	return &SlackNotifier{
 		webhookUrl: webhookUrl,
-		headers:    headers,
 	}
 }
 
@@ -30,19 +26,8 @@ type slackPayload struct {
 
 func (n *SlackNotifier) Notify(content []string) error {
 
-	contentFormatted := strings.Builder{}
-	if n.isHeaderSet == false {
-		contentFormatted.WriteString(fmt.Sprintf("*%s*\n", time.Now().Format("02-01-2006 15:04:05 MST")))
-		contentFormatted.WriteString("*")
-		contentFormatted.WriteString(strings.Join(n.headers, "\t\t"))
-		contentFormatted.WriteString("*")
-		contentFormatted.WriteString("\n")
-		n.isHeaderSet = true
-	}
-	contentFormatted.WriteString(strings.Join(content, "\t\t"))
-
 	payload := &slackPayload{
-		Text: contentFormatted.String(),
+		Text: strings.Join(content, "\n"),
 	}
 	pBytes, err := json.Marshal(payload)
 	if err != nil {

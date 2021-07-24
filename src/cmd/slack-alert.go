@@ -25,9 +25,7 @@ func sendSlackAlerts(cmd *cobra.Command, args []string) {
 		log.Fatal("Please set SLACK_WEBHOOK_URL env")
 	}
 
-	notifier := notification.NewSlackNotifier(slackUrl, []string{
-		"Name", "District", "Date", "Vaccine", "Min Age", "Dose 1 Capacity", "Dose 2 Capacity", "Fee", "Block Name",
-	})
+	notifier := notification.NewSlackNotifier(slackUrl)
 
 	app := app.NewApp(&app.AppConf{
 		CowinUrl:       viper.GetString("COWIN_URL"),

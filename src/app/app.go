@@ -48,11 +48,11 @@ func NewApp(conf *AppConf, not notification.Notifier) *App {
 
 func (a *App) Start() {
 	base := time.Now()
-	for i := 0; i < a.AppConf.AlertDays; i++ {
-		dt := base.AddDate(0, 0, i)
-		date := dt.Format("02-01-2006")
+	for _, districtId := range a.AppConf.GetDistrictIDs() {
+		for i := 0; i < a.AppConf.AlertDays; i++ {
+			dt := base.AddDate(0, 0, i)
+			date := dt.Format("02-01-2006")
 
-		for _, districtId := range a.AppConf.GetDistrictIDs() {
 			url := fmt.Sprintf("%s?district_id=%d&date=%s", a.AppConf.CowinUrl, districtId, date)
 			res, err := http.Get(url)
 			resBuf := new(bytes.Buffer)
@@ -77,28 +77,27 @@ func (a *App) Start() {
 				fee, _ := jsonparser.GetString(value, "fee")
 				blockName, _ := jsonparser.GetString(value, "block_name")
 
-				if capacityDose1 == 0 {
+				if capacityDose1 == 0 && capacityDose2 == 0 {
 					return
 				}
 
 				feeFlt, _ := strconv.ParseFloat(fee, 32)
 				if feeFlt == 0 {
 					fee = "*Free*"
+				} else {
+					fee = "Fee:\t" + fee
 				}
 
 				content := []string{
-					name,
-					district,
-					date,
-					vaccine,
-					fmt.Sprintf("Age-%d", minAgeLimit),
-					fmt.Sprintf("D1-%d", capacityDose1),
-					fmt.Sprintf("D2-%d", capacityDose2),
-					fee,
-					blockName,
+					strings.Join([]string{"*" + date, name + "*"}, "\t"),
+					strings.Join([]string{"\t", vaccine, fee}, "\t"),
+					strings.Join([]string{"\t", fmt.Sprintf("Age: %d", minAgeLimit)}, "\t"),
+					strings.Join([]string{"\t", fmt.Sprintf("D1: %d\tD2: %d", capacityDose1, capacityDose2)}, "\t"),
+					strings.Join([]string{"\t", blockName, district}, "\t"),
 				}
 				a.Notifier.Notify(content)
 			}, "sessions")
+
 		}
 	}
 }
