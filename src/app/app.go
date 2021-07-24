@@ -15,8 +15,8 @@ import (
 )
 
 type App struct {
-	Notifier notification.Notifier
-	AppConf  *AppConf
+	Notifiers []notification.Notifier
+	AppConf   *AppConf
 }
 
 type AppConf struct {
@@ -40,10 +40,10 @@ func (a *AppConf) GetDistrictIDs() []int {
 	return d
 }
 
-func NewApp(conf *AppConf, not notification.Notifier) *App {
+func NewApp(conf *AppConf, not []notification.Notifier) *App {
 	app := &App{
-		Notifier: not,
-		AppConf:  conf,
+		Notifiers: not,
+		AppConf:   conf,
 	}
 	return app
 }
@@ -101,7 +101,10 @@ func (a *App) Start() {
 					strings.Join([]string{"\t", fmt.Sprintf("D1: %d\tD2: %d", capacityDose1, capacityDose2)}, "\t"),
 					strings.Join([]string{"\t", blockName, district}, "\t"),
 				}
-				a.Notifier.Notify(content)
+
+				for _, notifier := range a.Notifiers {
+					notifier.Notify(content)
+				}
 			}, "sessions")
 
 		}

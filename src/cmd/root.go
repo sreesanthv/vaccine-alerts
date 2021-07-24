@@ -13,8 +13,6 @@ var rootCmd = &cobra.Command{
 	Short: "Fetch alerts from Cowin and send alerts",
 }
 
-var mandatoryEnvs = []string{"COWIN_URL", "COWIN_DISTRICT_IDS", "ALERT_DAYS"}
-
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
 		log.Println(err)
@@ -24,7 +22,11 @@ func Execute() {
 
 func init() {
 	viper.AutomaticEnv()
-	for _, env := range mandatoryEnvs {
+	validateMandatoryEnv([]string{"COWIN_URL", "COWIN_DISTRICT_IDS", "ALERT_DAYS"})
+}
+
+func validateMandatoryEnv(envs []string) {
+	for _, env := range envs {
 		if val := viper.GetString(env); val == "" {
 			log.Fatalf("Please set value for Env variable, %s", env)
 		}

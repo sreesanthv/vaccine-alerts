@@ -1,5 +1,7 @@
 # vaccine-alerts
-Send notification for available vaccine slots
+Send notification for available vaccine slots through following medium,
+- Slack
+- Telegram
 
 ## Slack Integration
 - Create slack channel for alerts.
@@ -16,3 +18,5 @@ Send notification for available vaccine slots
         - Kozhikode - 305
     - COWIN_FIRST_DOSE_ONLY (false): Only get alert for first dose
     - COWIN_SECOND_DOSE_ONLY (false): Only get alert for second dose
+    - TELEGRAM_BOT_TOKEN - Token of bot with write message permission to chat.
+    - TELEGRAM_CHAT_ID - Chat ID of channel

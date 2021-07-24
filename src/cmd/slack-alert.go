@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	"log"
-
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"github.com/sreesanthv/vaccine-alerts/src/app"
@@ -20,12 +18,9 @@ func init() {
 }
 
 func sendSlackAlerts(cmd *cobra.Command, args []string) {
-	slackUrl := viper.GetString("SLACK_WEBHOOK_URL")
-	if slackUrl == "" {
-		log.Fatal("Please set SLACK_WEBHOOK_URL env")
-	}
+	validateMandatoryEnv([]string{"SLACK_WEBHOOK_URL"})
 
-	notifier := notification.NewSlackNotifier(slackUrl)
+	notifier := notification.NewSlackNotifier(viper.GetString("SLACK_WEBHOOK_URL"))
 
 	app := app.NewApp(&app.AppConf{
 		CowinUrl:       viper.GetString("COWIN_URL"),
@@ -33,6 +28,6 @@ func sendSlackAlerts(cmd *cobra.Command, args []string) {
 		AlertDays:      viper.GetInt("ALERT_DAYS"),
 		FirstDoseOnly:  viper.GetBool("COWIN_FIRST_DOSE_ONLY"),
 		SecondDoseOnly: viper.GetBool("COWIN_SECOND_DOSE_ONLY"),
-	}, notifier)
+	}, []notification.Notifier{notifier})
 	app.Start()
 }
