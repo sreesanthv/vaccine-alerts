@@ -23,6 +23,8 @@ type AppConf struct {
 	CowinUrl       string
 	CowinDistricts string
 	AlertDays      int
+	FirstDoseOnly  bool
+	SecondDoseOnly bool
 }
 
 func (a *AppConf) GetDistrictIDs() []int {
@@ -78,6 +80,10 @@ func (a *App) Start() {
 				blockName, _ := jsonparser.GetString(value, "block_name")
 
 				if capacityDose1 == 0 && capacityDose2 == 0 {
+					return
+				} else if a.AppConf.FirstDoseOnly && capacityDose1 == 0 {
+					return
+				} else if a.AppConf.SecondDoseOnly && capacityDose2 == 0 {
 					return
 				}
 

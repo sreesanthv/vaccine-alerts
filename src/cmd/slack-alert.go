@@ -31,6 +31,8 @@ func sendSlackAlerts(cmd *cobra.Command, args []string) {
 		CowinUrl:       viper.GetString("COWIN_URL"),
 		CowinDistricts: viper.GetString("COWIN_DISTRICT_IDS"),
 		AlertDays:      viper.GetInt("ALERT_DAYS"),
+		FirstDoseOnly:  viper.GetBool("COWIN_FIRST_DOSE_ONLY"),
+		SecondDoseOnly: viper.GetBool("COWIN_SECOND_DOSE_ONLY"),
 	}, notifier)
 	app.Start()
 }
