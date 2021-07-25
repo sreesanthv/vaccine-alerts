@@ -6,6 +6,8 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"github.com/sreesanthv/vaccine-alerts/src/app"
+	"github.com/sreesanthv/vaccine-alerts/src/notification"
 )
 
 var rootCmd = &cobra.Command{
@@ -31,4 +33,16 @@ func validateMandatoryEnv(envs []string) {
 			log.Fatalf("Please set value for Env variable, %s", env)
 		}
 	}
+}
+
+func startBatch(notifiers []notification.Notifier) {
+	app := app.NewApp(&app.AppConf{
+		CowinUrl:       viper.GetString("COWIN_URL"),
+		CowinDistricts: viper.GetString("COWIN_DISTRICT_IDS"),
+		AlertDays:      viper.GetInt("ALERT_DAYS"),
+		FirstDoseOnly:  viper.GetBool("COWIN_FIRST_DOSE_ONLY"),
+		SecondDoseOnly: viper.GetBool("COWIN_SECOND_DOSE_ONLY"),
+	}, notifiers)
+
+	app.Start()
 }

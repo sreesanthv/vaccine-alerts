@@ -114,4 +114,10 @@ func (a *App) Start() {
 		}
 	}
 	log.Println("Fetching free slots completed. Count:", count)
+
+	if count == 0 {
+		for _, notifier := range a.Notifiers {
+			notifier.Notify([]string{"No free slots available"})
+		}
+	}
 }
