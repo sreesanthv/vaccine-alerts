@@ -58,6 +58,7 @@ func (a *App) Start() {
 		for i := 0; i < a.AppConf.AlertDays; i++ {
 			dt := base.AddDate(0, 0, i)
 			date := dt.Format("02-01-2006")
+			log.Printf("Getting data for Date: %s\t District: %d", date, districtId)
 
 			url := fmt.Sprintf("%s?district_id=%d&date=%s", a.AppConf.CowinUrl, districtId, date)
 			res, err := http.Get(url)
@@ -116,10 +117,6 @@ func (a *App) Start() {
 		}
 	}
 	log.Println("Fetching free slots completed. Count:", count)
-
-	if count == 0 {
-		notify([]string{"No free slots available"}, a.Notifiers)
-	}
 }
 
 // send notification to all notifiers
