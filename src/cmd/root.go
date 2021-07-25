@@ -37,11 +37,12 @@ func validateMandatoryEnv(envs []string) {
 func StartBatch(notifiers []notification.Notifier) {
 	validateMandatoryEnv([]string{"COWIN_URL", "COWIN_DISTRICT_IDS", "ALERT_DAYS"})
 	app := app.NewApp(&app.AppConf{
-		CowinUrl:       viper.GetString("COWIN_URL"),
-		CowinDistricts: viper.GetString("COWIN_DISTRICT_IDS"),
-		AlertDays:      viper.GetInt("ALERT_DAYS"),
-		FirstDoseOnly:  viper.GetBool("COWIN_FIRST_DOSE_ONLY"),
-		SecondDoseOnly: viper.GetBool("COWIN_SECOND_DOSE_ONLY"),
+		CowinUrl:        viper.GetString("COWIN_URL"),
+		CowinDistricts:  viper.GetString("COWIN_DISTRICT_IDS"),
+		AlertDays:       viper.GetInt("ALERT_DAYS"),
+		FirstDoseOnly:   viper.GetBool("COWIN_FIRST_DOSE_ONLY"),
+		SecondDoseOnly:  viper.GetBool("COWIN_SECOND_DOSE_ONLY"),
+		FreeVaccineOnly: viper.GetBool("COWIN_FREE_VACCINE_ONLY"),
 	}, notifiers)
 
 	app.Start()

@@ -20,11 +20,12 @@ type App struct {
 }
 
 type AppConf struct {
-	CowinUrl       string
-	CowinDistricts string
-	AlertDays      int
-	FirstDoseOnly  bool
-	SecondDoseOnly bool
+	CowinUrl        string
+	CowinDistricts  string
+	AlertDays       int
+	FirstDoseOnly   bool
+	SecondDoseOnly  bool
+	FreeVaccineOnly bool
 }
 
 func (a *AppConf) GetDistrictIDs() []int {
@@ -81,6 +82,13 @@ func (a *App) Start() {
 				capacityDose2, _ := jsonparser.GetInt(value, "available_capacity_dose2")
 				fee, _ := jsonparser.GetString(value, "fee")
 				blockName, _ := jsonparser.GetString(value, "block_name")
+				feeFlt, _ := strconv.ParseFloat(fee, 32)
+
+				if feeFlt == 0 {
+					fee = "*Free*"
+				} else {
+					fee = "Fee:\t" + fee
+				}
 
 				if capacityDose1 == 0 && capacityDose2 == 0 {
 					return
@@ -88,13 +96,8 @@ func (a *App) Start() {
 					return
 				} else if a.AppConf.SecondDoseOnly && capacityDose2 == 0 {
 					return
-				}
-
-				feeFlt, _ := strconv.ParseFloat(fee, 32)
-				if feeFlt == 0 {
-					fee = "*Free*"
-				} else {
-					fee = "Fee:\t" + fee
+				} else if a.AppConf.FreeVaccineOnly && feeFlt != 0 {
+					return
 				}
 
 				content := []string{
