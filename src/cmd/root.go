@@ -35,7 +35,7 @@ func validateMandatoryEnv(envs []string) {
 	}
 }
 
-func startBatch(notifiers []notification.Notifier) {
+func StartBatch(notifiers []notification.Notifier) {
 	app := app.NewApp(&app.AppConf{
 		CowinUrl:       viper.GetString("COWIN_URL"),
 		CowinDistricts: viper.GetString("COWIN_DISTRICT_IDS"),
