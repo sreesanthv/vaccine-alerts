@@ -20,5 +20,5 @@ func sendSlackAlerts(cmd *cobra.Command, args []string) {
 	validateMandatoryEnv([]string{"SLACK_WEBHOOK_URL"})
 
 	notifier := notification.NewSlackNotifier(viper.GetString("SLACK_WEBHOOK_URL"))
-	startBatch([]notification.Notifier{notifier})
+	StartBatch([]notification.Notifier{notifier})
 }

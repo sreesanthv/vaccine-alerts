@@ -20,5 +20,5 @@ func sendTelegramAlerts(cmd *cobra.Command, args []string) {
 	validateMandatoryEnv([]string{"TELEGRAM_BOT_TOKEN", "TELEGRAM_CHAT_ID"})
 
 	notifier := notification.NewTelegramNotifier(viper.GetString("TELEGRAM_BOT_TOKEN"), viper.GetString("TELEGRAM_CHAT_ID"))
-	startBatch([]notification.Notifier{notifier})
+	StartBatch([]notification.Notifier{notifier})
 }
