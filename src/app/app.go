@@ -49,7 +49,10 @@ func NewApp(conf *AppConf, not []notification.Notifier) *App {
 }
 
 func (a *App) Start() {
+	log.Println("Started fetching free slots")
 	base := time.Now()
+
+	count := 0
 	for _, districtId := range a.AppConf.GetDistrictIDs() {
 		for i := 0; i < a.AppConf.AlertDays; i++ {
 			dt := base.AddDate(0, 0, i)
@@ -105,8 +108,10 @@ func (a *App) Start() {
 				for _, notifier := range a.Notifiers {
 					notifier.Notify(content)
 				}
+				count++
 			}, "sessions")
 
 		}
 	}
+	log.Println("Fetching free slots completed. Count:", count)
 }
