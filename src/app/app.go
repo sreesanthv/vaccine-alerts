@@ -61,13 +61,14 @@ func (a *App) Start() {
 
 			url := fmt.Sprintf("%s?district_id=%d&date=%s", a.AppConf.CowinUrl, districtId, date)
 			res, err := http.Get(url)
-			resBuf := new(bytes.Buffer)
-			io.Copy(resBuf, res.Body)
-
 			if err != nil {
 				log.Println("Error connecting Cowin API:", err)
 				continue
-			} else if res.StatusCode != 200 {
+			}
+
+			resBuf := new(bytes.Buffer)
+			io.Copy(resBuf, res.Body)
+			if res.StatusCode != 200 {
 				log.Println("Cowin API reponse not ok:", resBuf.String())
 				continue
 			}
