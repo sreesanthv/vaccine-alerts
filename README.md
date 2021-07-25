@@ -16,7 +16,10 @@ Send notification for available vaccine slots through following medium,
     - COWIN_DISTRICT_ID: 302,305
         - Malappuram - 302
         - Kozhikode - 305
-    - COWIN_FIRST_DOSE_ONLY (false): Only get alert for first dose
-    - COWIN_SECOND_DOSE_ONLY (false): Only get alert for second dose
+    - COWIN_FIRST_DOSE_ONLY (false): Only get alert for first dose.
+    - COWIN_SECOND_DOSE_ONLY (false): Only get alert for second dose.
+    - COWIN_FREE_VACCINE_ONLY (false): Only get alerts for free (cost) vaccines only.
     - TELEGRAM_BOT_TOKEN - Token of bot with write message permission to chat.
     - TELEGRAM_CHAT_ID - Chat ID of channel
+- go build
+- ./vaccine-alerts telegram
