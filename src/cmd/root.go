@@ -24,7 +24,6 @@ func Execute() {
 
 func init() {
 	viper.AutomaticEnv()
-	validateMandatoryEnv([]string{"COWIN_URL", "COWIN_DISTRICT_IDS", "ALERT_DAYS"})
 }
 
 func validateMandatoryEnv(envs []string) {
@@ -36,6 +35,7 @@ func validateMandatoryEnv(envs []string) {
 }
 
 func StartBatch(notifiers []notification.Notifier) {
+	validateMandatoryEnv([]string{"COWIN_URL", "COWIN_DISTRICT_IDS", "ALERT_DAYS"})
 	app := app.NewApp(&app.AppConf{
 		CowinUrl:       viper.GetString("COWIN_URL"),
 		CowinDistricts: viper.GetString("COWIN_DISTRICT_IDS"),

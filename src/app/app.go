@@ -105,9 +105,7 @@ func (a *App) Start() {
 					strings.Join([]string{"\t", blockName, district}, "\t"),
 				}
 
-				for _, notifier := range a.Notifiers {
-					notifier.Notify(content)
-				}
+				notify(content, a.Notifiers)
 				count++
 			}, "sessions")
 
@@ -116,8 +114,13 @@ func (a *App) Start() {
 	log.Println("Fetching free slots completed. Count:", count)
 
 	if count == 0 {
-		for _, notifier := range a.Notifiers {
-			notifier.Notify([]string{"No free slots available"})
-		}
+		notify([]string{"No free slots available"}, a.Notifiers)
+	}
+}
+
+// send notification to all notifiers
+func notify(content []string, ns []notification.Notifier) {
+	for _, notifier := range ns {
+		notifier.Notify(content)
 	}
 }
