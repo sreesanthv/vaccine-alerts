@@ -43,6 +43,7 @@ func StartBatch(notifiers []notification.Notifier) {
 		FirstDoseOnly:   viper.GetBool("COWIN_FIRST_DOSE_ONLY"),
 		SecondDoseOnly:  viper.GetBool("COWIN_SECOND_DOSE_ONLY"),
 		FreeVaccineOnly: viper.GetBool("COWIN_FREE_VACCINE_ONLY"),
+		MinAge:          viper.GetInt("MIN_AGE"),
 	}, notifiers)
 
 	app.Start()

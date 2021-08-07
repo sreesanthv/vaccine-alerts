@@ -26,6 +26,7 @@ type AppConf struct {
 	FirstDoseOnly   bool
 	SecondDoseOnly  bool
 	FreeVaccineOnly bool
+	MinAge          int
 }
 
 func (a *AppConf) GetDistrictIDs() []int {
@@ -99,6 +100,8 @@ func (a *App) Start() {
 				} else if a.AppConf.SecondDoseOnly && capacityDose2 == 0 {
 					return
 				} else if a.AppConf.FreeVaccineOnly && feeFlt != 0 {
+					return
+				} else if a.AppConf.MinAge > 0 && minAgeLimit > int64(a.AppConf.MinAge) {
 					return
 				}
 

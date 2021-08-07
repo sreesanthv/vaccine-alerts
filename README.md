@@ -19,6 +19,7 @@ Send notification for available vaccine slots through following medium,
     - COWIN_FIRST_DOSE_ONLY (false): Only get alert for first dose.
     - COWIN_SECOND_DOSE_ONLY (false): Only get alert for second dose.
     - COWIN_FREE_VACCINE_ONLY (false): Only get alerts for free (cost) vaccines only.
+    - MIN_AGE (): Only get alerts satisfying minumum age.
     - TELEGRAM_BOT_TOKEN - Token of bot with write message permission to chat.
     - TELEGRAM_CHAT_ID - Chat ID of channel
 - go build
