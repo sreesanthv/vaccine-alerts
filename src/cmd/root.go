@@ -35,6 +35,7 @@ func validateMandatoryEnv(envs []string) {
 }
 
 func StartBatch(notifiers []notification.Notifier) {
+	logConf()
 	validateMandatoryEnv([]string{"COWIN_URL", "COWIN_DISTRICT_IDS", "ALERT_DAYS"})
 	app := app.NewApp(&app.AppConf{
 		CowinUrl:        viper.GetString("COWIN_URL"),
@@ -47,4 +48,13 @@ func StartBatch(notifiers []notification.Notifier) {
 	}, notifiers)
 
 	app.Start()
+}
+
+func logConf() {
+	evs := []string{"COWIN_DISTRICT_IDS", "ALERT_DAYS", "COWIN_FIRST_DOSE_ONLY", "COWIN_SECOND_DOSE_ONLY", "COWIN_FREE_VACCINE_ONLY", "MIN_AGE"}
+	cf := map[string]string{}
+	for _, e := range evs {
+		cf[e] = viper.GetString(e)
+	}
+	log.Println("Configuration for batch:", cf)
 }

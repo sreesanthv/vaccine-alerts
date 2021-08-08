@@ -28,7 +28,7 @@ func NewTelegramNotifier(token, chatId string) *TelegramNotifier {
 
 func (n *TelegramNotifier) Send() {
 	for {
-		time.Sleep(30 * time.Millisecond)
+		time.Sleep(40 * time.Millisecond)
 		if len(n.content) == 0 {
 			continue
 		}
@@ -41,7 +41,9 @@ func (n *TelegramNotifier) Send() {
 			io.Copy(buf, res.Body)
 			log.Println("Error sending alert to telegram channel:", buf.String())
 		}
+		n.lock.Lock()
 		n.content = []string{}
+		n.lock.Unlock()
 	}
 }
 
